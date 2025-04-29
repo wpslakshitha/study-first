@@ -371,6 +371,52 @@ export default function TasksPage() {
   };
 
   useEffect(() => {
+    // Load active task from localStorage
+    const savedActiveTask = localStorage.getItem("activeTask");
+    if (savedActiveTask) {
+      try {
+        const parsedTask = JSON.parse(savedActiveTask);
+        // Convert dates back to Date objects
+        if (parsedTask) {
+          const taskWithDates = {
+            ...parsedTask,
+            createdAt: new Date(parsedTask.createdAt),
+            updatedAt: new Date(parsedTask.updatedAt),
+            timeEntries: parsedTask.timeEntries.map(
+              (entry: {
+                id: string;
+                startTime: string;
+                endTime: string | null;
+                taskId: string;
+                createdAt: string;
+                updatedAt: string;
+              }) => ({
+                ...entry,
+                startTime: new Date(entry.startTime),
+                endTime: entry.endTime ? new Date(entry.endTime) : null,
+                createdAt: new Date(entry.createdAt),
+                updatedAt: new Date(entry.updatedAt),
+              })
+            ),
+          };
+
+          setActiveTask(taskWithDates);
+          setTimer(Date.now());
+
+          // Calculate elapsed time from last start time
+          const lastEntry =
+            taskWithDates.timeEntries[taskWithDates.timeEntries.length - 1];
+          if (lastEntry && !lastEntry.endTime) {
+            const startTime = new Date(lastEntry.startTime);
+            const elapsedSeconds = differenceInSeconds(new Date(), startTime);
+            setElapsedTime(elapsedSeconds);
+          }
+        }
+      } catch (e) {
+        console.error("Failed to parse active task", e);
+      }
+    }
+
     fetchTasks();
     if (window.innerWidth >= 1024) {
       setShowAnalytics(true);
@@ -427,9 +473,15 @@ export default function TasksPage() {
     });
 
     setTasks(updatedTasks);
-    setActiveTask(task);
-    setTimer(Date.now());
-    setElapsedTime(0);
+    const updatedTask = updatedTasks.find((t) => t.id === task.id);
+    if (updatedTask) {
+      setActiveTask(updatedTask);
+      setTimer(Date.now());
+      setElapsedTime(0);
+
+      // Save to localStorage with proper date serialization
+      localStorage.setItem("activeTask", JSON.stringify(updatedTask));
+    }
 
     toast({
       title: "Timer started",
@@ -475,6 +527,9 @@ export default function TasksPage() {
     setTasks(updatedTasks);
     setActiveTask(null);
     setTimer(null);
+
+    // Remove from localStorage
+    localStorage.removeItem("activeTask");
 
     toast({
       title: "Timer stopped",

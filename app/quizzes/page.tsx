@@ -244,7 +244,7 @@ export default function QuizzesPage() {
 
   if (quizCompleted && viewingAnswers && currentQuiz) {
     return (
-      <div className="max-w-2xl mx-auto space-y-6">
+      <div className="max-w-2xl mx-auto space-y-6 p-6 sm:p-0">
         <div className="flex items-center justify-between">
           <h1 className="text-xl font-bold">Answer Review</h1>
           <div className="flex items-center gap-2">

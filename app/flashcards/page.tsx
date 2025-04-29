@@ -300,10 +300,14 @@ export default function FlashcardsPage() {
   };
 
   // Loading state
+
   if (isLoading && !selectedSubject) {
     return (
-      <div className="max-w-2xl mx-auto p-4 text-center">
-        <p>Loading subjects...</p>
+      <div className="flex justify-center items-center h-96">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary mx-auto"></div>
+          <p className="mt-4">Loading subjects...</p>
+        </div>
       </div>
     );
   }
@@ -337,9 +341,7 @@ export default function FlashcardsPage() {
               className="border rounded-lg p-4 cursor-pointer hover:shadow-md transition-shadow flex items-center gap-3"
               onClick={() => setSelectedSubject(subject)}
             >
-              <div className="bg-blue-100 p-2 rounded-full">
-                {getSubjectIcon(subject)}
-              </div>
+              <div className="p-2 rounded-full">{getSubjectIcon(subject)}</div>
               <div>
                 <h3 className="font-medium text-base sm:text-lg">
                   {subject.charAt(0) + subject.slice(1).toLowerCase()}{" "}
@@ -357,12 +359,16 @@ export default function FlashcardsPage() {
   }
 
   // Loading selected subject
-  if (isLoading && selectedSubject) {
+
+  if (isLoading) {
     return (
-      <div className="max-w-2xl mx-auto p-4 text-center">
-        <h1 className="text-xl font-bold mb-4">
-          Loading {selectedSubject.toLowerCase()} flashcards...
-        </h1>
+      <div className="flex justify-center items-center h-96">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary mx-auto"></div>
+          <p className="mt-4">
+            Loading {selectedSubject.toLowerCase()} Flashcards...
+          </p>
+        </div>
       </div>
     );
   }
@@ -382,7 +388,7 @@ export default function FlashcardsPage() {
           </button>
           <button
             onClick={resetCards}
-            className="px-4 py-2 border border-gray-300 bg-white hover:bg-gray-50 rounded-md"
+            className="px-4 py-2 border border-gray-300 hover:bg-gray-50 rounded-md"
           >
             Change Subject
           </button>
@@ -400,7 +406,7 @@ export default function FlashcardsPage() {
           Session Complete!
         </h2>
 
-        <div className="bg-blue-50 p-4 sm:p-6 rounded-lg">
+        <div className="border p-4 sm:p-6 rounded-lg">
           <h3 className="text-2xl sm:text-3xl font-bold mb-2">
             {calculateScore()}%
           </h3>
@@ -434,7 +440,7 @@ export default function FlashcardsPage() {
           </button>
           <button
             onClick={resetCards}
-            className="w-full border border-gray-300 bg-white hover:bg-gray-50 py-2 px-4 rounded-md text-sm sm:text-base"
+            className="w-full border border-gray-300  hover:bg-gray-50 py-2 px-4 rounded-md text-sm sm:text-base"
           >
             Change Subject
           </button>
@@ -469,7 +475,7 @@ export default function FlashcardsPage() {
           </button>
           <button
             onClick={resetCards}
-            className="px-4 py-2 border border-gray-300 bg-white hover:bg-gray-50 rounded-md text-sm sm:text-base"
+            className="px-4 py-2 border border-gray-300  hover:bg-gray-50 rounded-md text-sm sm:text-base"
           >
             New Subject
           </button>
@@ -549,14 +555,14 @@ export default function FlashcardsPage() {
         </button>
         <button
           onClick={handleNextCard}
-          className="flex items-center gap-1 border border-gray-300 bg-white hover:bg-gray-50 px-3 py-2 rounded-md text-sm"
+          className="flex items-center gap-1 border border-gray-300  hover:bg-gray-50 px-3 py-2 rounded-md text-sm"
         >
           <ArrowRightCircle className="h-4 w-4" />
           <span className="hidden xs:inline">Next</span>
         </button>
         <button
           onClick={handleShuffle}
-          className="flex items-center gap-1 border border-gray-300 bg-white hover:bg-gray-50 px-3 py-2 rounded-md text-sm"
+          className="flex items-center gap-1 border border-gray-300  hover:bg-gray-50 px-3 py-2 rounded-md text-sm"
         >
           <Shuffle className="h-4 w-4" />
           <span className="hidden xs:inline">Shuffle</span>
